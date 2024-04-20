@@ -8,13 +8,15 @@ import Single from './views/Single';
 
 const App = () => {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/upload" element={<Upload />} />
-          <Route path="/media/:id" element={<Single />} />
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="upload" element={<Upload />} />
+            <Route path="media/:id" element={<Single />} />
+          </Routes>
         </Route>
       </Routes>
     </Router>

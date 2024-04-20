@@ -4,8 +4,8 @@ const Layout = () => (
   <div>
     <header>
       <nav>
-        <Link to="/">Etusivu 🏠</Link>
-        <Link to="/profile">Profiili 😃</Link>
+        <Link to="/">Etusivu</Link>
+        <Link to="/profile">Profiili</Link>
         <Link to="/upload">Upload</Link>
       </nav>
     </header>

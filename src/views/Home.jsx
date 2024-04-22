@@ -1,11 +1,21 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import MediaRow from '../components/MediaRow';
-import mediaArray from '../data/media';
+import {fetchdata} from '../lib/fetchdata';
 
 const Home = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
+  // const [selectedItem, setSelectedItem] = useState(null);
+  const [mediaArray, setMediaArray] = useState([]);
 
-  console.log(selectedItem);
+  const getMedia = async () => {
+    const mediaResult = await fetchdata('test/json');
+    setMediaArray(mediaResult);
+
+  };
+  useEffect(() => {
+    getMedia();
+  }, []);
+
+  console.log(mediaArray);
 
   return (
     <>
@@ -23,11 +33,11 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {mediaArray.map((item) => (
+          {mediaArray.map((media) => (
             <MediaRow
-              key={item.media_id}
-              item={item}
-              setSelectedItem={setSelectedItem}
+              key={media.id}
+              media={media}
+              // setSelectedItem={setSelectedItem}
             />
           ))}
         </tbody>

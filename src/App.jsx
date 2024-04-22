@@ -8,7 +8,7 @@ import Single from './views/Single';
 
 const App = () => {
   return (
-    <Router basename="/~kaislake/wsk-routing/">
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

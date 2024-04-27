@@ -6,10 +6,12 @@ import Upload from './views/Upload';
 import Layout from './views/Layout';
 import Single from './views/Single';
 import Login from './views/Login';
+import { UserProvider } from './contexts/UserContext';
 
 const App = () => {
   return (
     <Router basename={import.meta.env.BASE_URL}>
+      <UserProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -19,6 +21,7 @@ const App = () => {
           <Route path="/login" element={<Login/>}/>
         </Route>
       </Routes>
+      </UserProvider>
     </Router>
   );
 };

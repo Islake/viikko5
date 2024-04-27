@@ -1,4 +1,4 @@
-import {useUser} from '../hooks/ApiHooks';
+import {useUser} from '../hooks/apiHooks';
 import useForm from '../hooks/formHooks';
 import Button from './UI/Button';
 

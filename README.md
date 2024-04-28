@@ -1,1 +1,1 @@
-Open [wsk-routing app](https://users.metropolia.fi/~kaislake/context/) to view it in the browser.
+Open [app](https://users.metropolia.fi/~kaislake/wsk-routing/) to view it in the browser.

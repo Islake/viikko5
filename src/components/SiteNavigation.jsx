@@ -7,13 +7,14 @@ const SiteNavigation = () => {
   console.log("user", user)
   return (
     <nav>
-      <Link to="/">Etusivu 🏠</Link>
+      <Link to="/">Etusivu</Link>
       {user !== undefined && <>
-        <Link to="/profile">Profiili 😃</Link>
+        <Link to="/profile">Profiili</Link>
         <Link to="/upload">Upload</Link>
         <Button text="Logout" handleClick={handleLogout} />
       </>}
       {!user && <Link to="/login">Login</Link>}
+      <Link to="/upload">Upload</Link>
     </nav>
   );
 }

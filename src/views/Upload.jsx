@@ -1,87 +1,95 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-
-const baseApiUrl = "http://127.0.0.1:3000"
+import {useState} from 'react';
+import useForm from '../hooks/formHooks';
+import {useNavigate} from 'react-router-dom';
+import {useFile, useMedia} from '../hooks/apiHooks';
 
 const Upload = () => {
-  const [file, setFile] = useState(null)
-  const [name, setName] = useState("")
-  const [apiResult, setApiResult] = useState(null)
+  const [file, setFile] = useState(null);
+  const navigate = useNavigate();
+  const {postMedia} = useMedia();
+  const {postFile} = useFile();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  const initValues = {
+    title: '',
+    description: '',
+  };
 
-    // clear possible previous api result
-    setApiResult(null)
+  const handleFileChange = (evt) => {
+    if (evt.target.files) {
+      console.log(evt.target.files[0]);
+      setFile(evt.target.files[0]);
+    }
+  };
 
-    console.log("file", file)
-    console.log("name", name)
+  const doUpload = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const uploadResult = await postFile(file, token);
+      const serverFile = new File([file], uploadResult.data.filename, {
+        type: file.type,
+      });
+      await postMedia(serverFile, inputs, token);
 
-    const formData = new FormData()
-    formData.append("file", file)
-    formData.append("name", name)
+      navigate('/');
+    } catch (e) {
+      alert(e.message);
+    }
+  };
 
-    // send local state values (name, file) to a backend
-    const response = await fetch(`${baseApiUrl}/post-test`, {
-      method: "post",
-      body: formData
-    })
+  const {handleSubmit, handleInputChange, inputs} = useForm(
+    doUpload,
+    initValues,
+  );
 
-    const result = await response.json()
-
-    console.log("result", result)
-
-    setApiResult(result)
-  }
-
-  return <>
-  {apiResult !== null && <div>
-    <img src={`${baseApiUrl}/${apiResult.file.path}`} />
-    </div>}
-    <form onSubmit={handleSubmit}>
-      <input
-        type="file"
-        name="tiedosto"
-        onChange={(event) => {
-          setApiResult(null)
-          console.log("event", event)
-          setFile(event.target.files[0])
-        }}
-      /><br />
-
-      {file !== null &&
-        <p>
-          Preview:<br />
-          <img src={URL.createObjectURL(file)} />
-        </p>
-      }
-
-      <label htmlFor="name">Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        onChange={(event) => {
-          setApiResult(null)
-          setName(event.target.value)
-        }}
-      />
-      <button
-        className="
-          m-3 mt-0
-          p-3
-          rounded-lg
-          bg-blue-500 text-white
-        "
-        type="submit"
-      >Upload file</button>
-    </form>
-
-    <p className="mt-12">
-      <Link to="/">Back to home</Link>
-    </p>
-  </>
-}
-
-
-export default Upload
+  return (
+        <>
+            <h1>Upload</h1>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="title">Title</label>
+                    <input
+                        name="title"
+                        type="text"
+                        id="title"
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        name="description"
+                        rows={5}
+                        id="description"
+                        onChange={handleInputChange}
+                    ></textarea>
+                </div>
+                <div>
+                    <label htmlFor="file">File</label>
+                    <input
+                        name="file"
+                        type="file"
+                        id="file"
+                        accept="image/*, video/*"
+                    onChange={handleFileChange}
+                    />
+                </div>
+                <img
+                    src={
+                        file
+                        ? URL.createObjectURL(file)
+                        : 'https://via.placeholder.com/200?text=Choose+image'
+                    }
+                    alt="preview"
+                    width="200"
+                />
+                <button
+                    type="submit"
+                    disabled={file && inputs.title.length > 3 ? false : true}
+                >
+                    Upload
+                </button>
+            </form>
+        </>
+    );
+};
+export default Upload;

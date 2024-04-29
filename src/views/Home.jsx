@@ -1,18 +1,13 @@
 import MediaRow from '../components/MediaRow';
-import UserData from '../components/UserData';
-import {useMedia} from '../hooks/apiHooks';
+import {useMedia} from '../hooks/ApiHooks';
 
 const Home = () => {
   // const [selectedItem, setSelectedItem] = useState(null);
 
-  const {mediaArray} = useMedia();
+  const {mediaArray, deleteMedia} = useMedia();
 
   return (
     <>
-
-      <UserData />
-
-
       <h2>My Media</h2>
       <table>
         <thead>
@@ -33,6 +28,7 @@ const Home = () => {
               key={item.media_id}
               item={item}
               // setSelectedItem={setSelectedItem}
+              deleteMedia={deleteMedia}
             />
           ))}
         </tbody>
